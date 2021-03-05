@@ -9,7 +9,7 @@ const changeColor = keyframes`
 	}
 	to {
 		background-color: #FFFFFF;
-		padding-left: 20px;
+		padding-left: 50px;
 	}
 `;
 
@@ -17,11 +17,11 @@ const commonField = css`
 	background: #DCDCDC;
 	border: 1px solid #DCDCDC;
 	position: relative;
-	width: 500px;
+	width: 645px;
 	height: 50px;
 	box-sizing: border-box;
-	padding: 15px 10px;
-	border-radius: 15px;
+	padding: 17px 230px 15px 10px;
+	border-radius: 10px;
 	outline: none;
 	resize: none;
 	overflow: hidden;
@@ -41,11 +41,11 @@ const commonField = css`
 `;
 
 const visibleField = css`
-	z-index: 1;
+	z-index: 200;
 `;
 
 const notVisibleField = css`
-	z-index: 3;
+	z-index: 100;
 	animation: ${changeColor} 0.3s linear forwards;
 `;
 

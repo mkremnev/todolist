@@ -1,19 +1,21 @@
-/** @jsx jsx */
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import clsx from 'clsx';
 import { Checkbox, makeStyles } from '@material-ui/core'
-import { jsx, css } from '@emotion/react';
 
 const styleChecked = makeStyles({
     root: {
+        position: 'absolute',
+        top: 18,
+        left: 3,
+        zIndex: 50,
         '&:hover': {
             backgroundColor: 'transparent',
         },
     },
     icon: {
-        borderRadius: 3,
-        width: 16,
-        height: 16,
+        borderRadius: 5,
+        width: 20,
+        height: 20,
         backgroundColor: '#DCDCDC',
         '$root.Mui-focusVisible &': {
             outline: '2px auto rgba(19,124,189,.6)',
@@ -32,8 +34,8 @@ const styleChecked = makeStyles({
         backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
         '&:before': {
             display: 'block',
-            width: 16,
-            height: 16,
+            width: 20,
+            height: 20,
             backgroundImage:
                 "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath" +
                 " fill-rule='evenodd' clip-rule='evenodd' d='M12 5c-.28 0-.53.11-.71.29L7 9.59l-2.29-2.3a1.003 " +
@@ -43,27 +45,38 @@ const styleChecked = makeStyles({
         'input:hover ~ &': {
             backgroundColor: '#DCDCDC',
         },
+    },
+    animation: {
+        animation: `$animationCheckbox 0.3s linear forwards`
+    },
+    '@keyframes animationCheckbox': {
+        'from': {
+            left: 3,
+            zIndex: 50
+        },
+        'to': {
+            left: 20,
+            zIndex: 300
+        }
     }
 })
 
-const StyledCheckbox: FC<{}> = (props) => {
+interface CheckboxProps {
+    clicked: boolean;
+}
+
+const StyledCheckbox: FC<CheckboxProps> = ({clicked}) => {
     const classes = styleChecked();
 
     return (
-        <Checkbox
-            className={classes.root}
-            color="default"
-            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
-            icon={<span className={classes.icon} />}
-            inputProps={{ 'aria-label': 'decorative checkbox' }}
-            {...props}
-            css={css`
-                position: absolute;
-                top: 0;
-                left: 0;
-                `}
-        />
-    );
+            <Checkbox
+                className={clsx(classes.root, clicked ? classes.animation : '')
+                }
+                color="default"
+                checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+                icon={<span className={classes.icon} />}
+                inputProps={{ 'aria-label': 'decorative checkbox' }}
+            />);
 }
 
 export default StyledCheckbox;

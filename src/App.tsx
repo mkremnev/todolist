@@ -6,6 +6,8 @@ import { Grid } from '@material-ui/core'
 import { Field } from "@/components/Field/Field";
 import StyledCheckbox from "@/components/StyledCheckbox/StyledCheckbox";
 import { jsx, css } from '@emotion/react';
+import DatePickerCustome from "@/components/DatePickerCustome/DatePickerCustome";
+import ListsCostume from "@/components/ListsCostume/ListsCostume";
 
 export const App: React.FC<{}> = () => {
     const [clicked, setClicked] = useState(false);
@@ -14,8 +16,6 @@ export const App: React.FC<{}> = () => {
         setClicked(true);
         console.log('Clicked')
     }
-
-
 
     return (
         <Provider store={store}>
@@ -31,7 +31,9 @@ export const App: React.FC<{}> = () => {
                     overflow: hidden;
                 `}>
                     <Field clicked={clicked} onClick={onClicked} />
-                    <StyledCheckbox />
+                    <StyledCheckbox clicked={clicked} />
+                    <DatePickerCustome clicked={clicked} />
+                    <ListsCostume clicked={clicked} />
                 </Grid>
                 <Grid item xs={6}>
                     <h3>Задачи</h3>
