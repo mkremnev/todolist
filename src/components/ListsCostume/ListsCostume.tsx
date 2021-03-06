@@ -3,7 +3,8 @@ import clsx from "clsx";
 import {makeStyles, Theme, withStyles} from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { InputBase } from "@material-ui/core";
+import {InputBase, MenuItem} from "@material-ui/core";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 interface ListsCostumeProps {
     clicked: boolean;
@@ -17,22 +18,14 @@ const BootstrapInput = withStyles((theme: Theme) => ({
         borderRadius: 10,
         position: 'relative',
         fontSize: 16,
-        padding: '11px 26px 11px 12px',
+        padding: '11px 26px 11px 21px',
+        width: 122,
         '&:focus': {
             outline: 'none',
             border: 'none',
             boxShadow: 'none',
             background: 'none'
-        },
-        '&:before': {
-            content: ' ',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: 10,
-            height: 10,
-            border: '1px solid #DCDCDC'
-        },
+        }
     },
 }))(InputBase);
 
@@ -45,16 +38,30 @@ const styleListsCostume = makeStyles((theme) => ({
         top: 16,
         left: 484,
         zIndex: 500,
-        opacity: 0
+        opacity: 0,
+        '& div': {
+            paddingRight: '0 !important',
+            color: 'grey',
+            position: 'relative'
+        },
+        '& svg': {
+            color: 'grey'
+        }
+    },
+    circle: {
+        display: 'inline-block',
+        position: 'absolute',
+        top: 16,
+        left: 7,
+        width: 5,
+        height: 5,
+        border: '2px solid grey',
+        color: 'grey',
+        backgroundColor: '#DCDCDC',
+        borderRadius: 7
     },
     animation: {
         animation: `$animatedSelect 0.4s linear forwards`
-    },
-    icon: {
-        borderRadius: 5,
-        width: 20,
-        height: 20,
-        backgroundColor: '#DCDCDC',
     },
     "@keyframes animatedSelect": {
         "from": {
@@ -73,22 +80,22 @@ const ListsCostume: FC<ListsCostumeProps> = ({ clicked }) => {
     return (
         <FormControl className={clsx(classes.formControl, clicked ? classes.animation : '')}>
             <Select
-                id="lists"
-                native
+                id='lists'
                 value={list}
                 onChange={ (ev: React.ChangeEvent<{ name?: string; value: string | unknown }>) => handlerChangeList((ev.target.value as string))}
                 input={<BootstrapInput />}
-                IconComponent={() => <span className={classes.icon} />}
+                IconComponent={() => <ExpandMoreIcon />}
                 inputProps={{
                     name: 'age',
                     id: 'age-native-simple',
                 }}
             >
-                <option value="">No List</option>
-                <option value='Важное'>Важное</option>
-                <option value='Избранное'>Избранное</option>
-                <option value='Не очень важное'>Не очень важное</option>
+                <MenuItem value=''>Not list</MenuItem>
+                <MenuItem value='Важное'>Важное</MenuItem>
+                <MenuItem value='Важное'>Важное</MenuItem>
+                <MenuItem value='Не очень важное'>Не очень важное</MenuItem>
             </Select>
+            <span className={classes.circle} />
         </FormControl>
     )
 }
