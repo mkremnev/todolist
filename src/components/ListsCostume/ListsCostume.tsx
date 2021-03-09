@@ -7,7 +7,7 @@ import {InputBase, MenuItem} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 interface ListsCostumeProps {
-    clicked: boolean;
+    clicked?: boolean;
 }
 
 const BootstrapInput = withStyles((theme: Theme) => ({
@@ -85,10 +85,6 @@ const ListsCostume: FC<ListsCostumeProps> = ({ clicked }) => {
                 onChange={ (ev: React.ChangeEvent<{ name?: string; value: string | unknown }>) => handlerChangeList((ev.target.value as string))}
                 input={<BootstrapInput />}
                 IconComponent={() => <ExpandMoreIcon />}
-                inputProps={{
-                    name: 'age',
-                    id: 'age-native-simple',
-                }}
             >
                 <MenuItem value=''>Not list</MenuItem>
                 <MenuItem value='Важное'>Важное</MenuItem>

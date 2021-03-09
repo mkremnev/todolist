@@ -1,52 +1,53 @@
-import React, {FC, useState} from "react";
+import React, {FC, useReducer, createContext, useState} from "react";
+import { State, reducer, initialState, addTask, changeTask, removeTask, toggleTasks, Task } from "./reducer";
+import { Dispatch, Reducer } from "react";
 import { Grid } from "@material-ui/core";
-import { Field } from "@/components/Field/Field";
-import StyledCheckbox from "@/components/StyledCheckbox/StyledCheckbox";
-import DatePickerCustome from "@/components/DatePickerCustome/DatePickerCustome";
-import ListsCostume from "@/components/ListsCostume/ListsCostume";
-import { makeStyles } from "@material-ui/core/styles";
+import TasksList from "@/modules/TasksList/TasksList";
+import NewTask from '@/modules/NewTask/NewTask'
+import { Action } from "@reduxjs/toolkit";
 
 
+export const ContextTodos = createContext<Partial<ContextState>>({});
 
-const styles = makeStyles(() => ({
-    root: {
-        position: 'relative',
-        overflow: 'hidden'
-    }
-}))
+export type ContextState = {
+    state: State;
+    dispatch: Dispatch<Action>
+}
 
 const Todos: FC<{}> = () => {
-    const classes = styles();
+    const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, initialState);
+    const [clickedAdd, setClickedAdd] = useState(false);
+    const [clickedList, setClickedList] = useState(false);
 
-    const [clicked, setClicked] = useState(false);
-
-    const onClicked = () => {
-        setClicked(true);
+    const onClickedAdd = () => {
+        setClickedAdd(true);
         console.log('Clicked')
-    }
+    };
+
+    const onClickedList = () => {
+        setClickedList(true);
+        console.log('Clicked')
+    };
+
+
+    const ContextState: ContextState = {
+        state,
+        dispatch
+    };
 
     return (
-        <Grid
-            container
-            direction="row"
-            justify="space-around"
-            alignItems="center"
-            spacing={3}
-        >
+        <ContextTodos.Provider value={ContextState}>
             <Grid
-                className={classes.root}
-                item xs={6}
+                container
+                direction="row"
+                justify="space-around"
+                alignItems="center"
+                spacing={3}
             >
-                <Field clicked={clicked} onClick={onClicked} />
-
-                <StyledCheckbox clicked={clicked} />
-                <DatePickerCustome clicked={clicked} />
-                <ListsCostume clicked={clicked} />
+                <NewTask clicked={clickedAdd} onClicked={onClickedAdd} />
+                <TasksList  />
             </Grid>
-            <Grid item xs={6}>
-                <h3>Задачи</h3>
-            </Grid>
-        </Grid>
+        </ContextTodos.Provider>
     )
 }
 

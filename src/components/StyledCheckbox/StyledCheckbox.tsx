@@ -62,10 +62,12 @@ const styleChecked = makeStyles({
 })
 
 interface CheckboxProps {
-    clicked: boolean;
+    clicked?: boolean;
+    onChange?: (ev: React.ChangeEvent<HTMLInputElement>) => void;
+    value?: boolean;
 }
 
-const StyledCheckbox: FC<CheckboxProps> = ({clicked}) => {
+const StyledCheckbox: FC<CheckboxProps> = ({clicked, onChange, ...props}) => {
     const classes = styleChecked();
 
     return (
@@ -76,6 +78,8 @@ const StyledCheckbox: FC<CheckboxProps> = ({clicked}) => {
                 checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
                 icon={<span className={classes.icon} />}
                 inputProps={{ 'aria-label': 'decorative checkbox' }}
+                onChange={onChange}
+                {...props}
             />);
 }
 

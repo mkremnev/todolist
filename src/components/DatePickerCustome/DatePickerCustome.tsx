@@ -60,7 +60,7 @@ const styleDatePicker = makeStyles({
 });
 
 interface DatePickerProps {
-    clicked: boolean;
+    clicked?: boolean;
 }
 
 const DatePickerCustome: FC<DatePickerProps> = ({ clicked }) => {

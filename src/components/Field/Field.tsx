@@ -1,10 +1,12 @@
-import React, {FC, KeyboardEvent} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent} from 'react';
 import { TextArea } from './Styled';
 
 export interface FieldProps {
     clicked?: boolean;
+    value?: string;
+    onChange?: (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
     children?: React.ReactNode;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 export interface StyledProps {
@@ -15,7 +17,9 @@ export interface StyledProps {
 export const Field: FC<FieldProps> = ({
     clicked,
     onClick,
-    children
+    children,
+    value,
+    onChange
 }) => {
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         (e.target as HTMLTextAreaElement).style.height = '50px';
@@ -23,7 +27,7 @@ export const Field: FC<FieldProps> = ({
     }
 
     return (
-        <TextArea onClick={onClick} isClicked={clicked} placeholder={"Write a new task"} onKeyDown={handleKeyDown}>
+        <TextArea onClick={onClick} isClicked={clicked} placeholder={"Write a new task"} onKeyDown={handleKeyDown} value={value} onChange={onChange}>
             {children}
         </TextArea>
     )
