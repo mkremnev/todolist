@@ -4,7 +4,8 @@ import { TextArea } from './Styled';
 export interface FieldProps {
     clicked?: boolean;
     value?: string;
-    onChange?: (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    defaultValue?: string;
+    onChange?: (ev: ChangeEvent<HTMLTextAreaElement>) => void;
     children?: React.ReactNode;
     onClick?: () => void;
 }
@@ -19,15 +20,16 @@ export const Field: FC<FieldProps> = ({
     onClick,
     children,
     value,
-    onChange
+    onChange,
+    defaultValue
 }) => {
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        (e.target as HTMLTextAreaElement).style.height = '50px';
+        (e.target as HTMLTextAreaElement).style.height = '51px';
         (e.target as HTMLTextAreaElement).style.height = `${(e.target as HTMLTextAreaElement).scrollHeight}px`;
     }
 
     return (
-        <TextArea onClick={onClick} isClicked={clicked} placeholder={"Write a new task"} onKeyDown={handleKeyDown} value={value} onChange={onChange}>
+        <TextArea onClick={onClick} isClicked={clicked} placeholder={"Write a new task"} onKeyDown={handleKeyDown} value={value} onChange={onChange} defaultValue={defaultValue}>
             {children}
         </TextArea>
     )

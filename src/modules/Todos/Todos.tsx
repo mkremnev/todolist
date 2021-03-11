@@ -1,52 +1,77 @@
-import React, {FC, useReducer, createContext, useState} from "react";
-import { State, reducer, initialState, addTask, changeTask, removeTask, toggleTasks, Task } from "./reducer";
-import { Dispatch, Reducer } from "react";
-import { Grid } from "@material-ui/core";
+import React, {FC, useReducer, createContext, Dispatch, Reducer, useContext} from "react";
+import { TodoState, todoReducer, initialState } from "./reducer";
+import { Card, Grid, Paper } from "@material-ui/core";
 import TasksList from "@/modules/TasksList/TasksList";
 import NewTask from '@/modules/NewTask/NewTask'
 import { Action } from "@reduxjs/toolkit";
-
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from 'clsx';
 
 export const ContextTodos = createContext<Partial<ContextState>>({});
 
 export type ContextState = {
-    state: State;
+    state: TodoState;
     dispatch: Dispatch<Action>
 }
 
-const Todos: FC<{}> = () => {
-    const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, initialState);
-    const [clickedAdd, setClickedAdd] = useState(false);
-    const [clickedList, setClickedList] = useState(false);
+const styles = makeStyles(() => ({
+    root: {
+        position: 'relative',
+        overflow: 'hidden'
+    },
+    common: {
+        padding: 20,
+        maxWidth: '100%',
+        width: '45%',
+        display: 'flex',
+        flexWrap: 'wrap',
+        height: '89vh',
+        "& h3": {
+            flexBasis: '100%',
+            textAlign: 'center'
+        }
+    },
+    cardLeft: {
 
-    const onClickedAdd = () => {
-        setClickedAdd(true);
-        console.log('Clicked')
-    };
+    },
+    cardRight: {
+        overflowY: "auto"
+    },
+    paper: {
+        padding: 10,
+        height: '96vh'
+    }
+}));
 
-    const onClickedList = () => {
-        setClickedList(true);
-        console.log('Clicked')
-    };
-
+const Todos: FC = () => {
+    const classes = styles();
+    const [state, dispatch] = useReducer<Reducer<TodoState, Action>>(todoReducer, initialState);
 
     const ContextState: ContextState = {
         state,
         dispatch
     };
 
+
     return (
         <ContextTodos.Provider value={ContextState}>
-            <Grid
-                container
-                direction="row"
-                justify="space-around"
-                alignItems="center"
-                spacing={3}
-            >
-                <NewTask clicked={clickedAdd} onClicked={onClickedAdd} />
-                <TasksList  />
-            </Grid>
+            <Paper className={clsx(classes.paper)} >
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-around"
+                    alignItems="center"
+                >
+                    <Card className={clsx(classes.common)} variant={"outlined"}>
+                        <h3>Планировщик</h3>
+                        <NewTask />
+                    </Card>
+                    <Card className={clsx(classes.common, classes.cardRight)} variant={"outlined"}>
+                        <h3>Задачи</h3>
+                        <TasksList  />
+                    </Card>
+                </Grid>
+            </Paper>
         </ContextTodos.Provider>
     )
 }

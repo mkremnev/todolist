@@ -5,7 +5,7 @@ import { Checkbox, makeStyles } from '@material-ui/core'
 const styleChecked = makeStyles({
     root: {
         position: 'absolute',
-        top: 18,
+        top: 7,
         left: 3,
         zIndex: 50,
         '&:hover': {
@@ -55,19 +55,19 @@ const styleChecked = makeStyles({
             zIndex: 50
         },
         'to': {
-            left: 20,
-            zIndex: 300
+            left: 15,
+            zIndex: 400
         }
     }
 })
 
 interface CheckboxProps {
     clicked?: boolean;
-    onChange?: (ev: React.ChangeEvent<HTMLInputElement>) => void;
+    checkedBox?: (ev: React.ChangeEvent<HTMLInputElement>) => void;
     value?: boolean;
 }
 
-const StyledCheckbox: FC<CheckboxProps> = ({clicked, onChange, ...props}) => {
+const StyledCheckbox: FC<CheckboxProps> = ({clicked, checkedBox, value}) => {
     const classes = styleChecked();
 
     return (
@@ -78,9 +78,11 @@ const StyledCheckbox: FC<CheckboxProps> = ({clicked, onChange, ...props}) => {
                 checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
                 icon={<span className={classes.icon} />}
                 inputProps={{ 'aria-label': 'decorative checkbox' }}
-                onChange={onChange}
-                {...props}
+                onChange={checkedBox}
+                value={value}
             />);
 }
 
 export default StyledCheckbox;
+
+StyledCheckbox.displayName = 'StyledCheckbox';

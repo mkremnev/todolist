@@ -1,55 +1,48 @@
-import React, {ChangeEvent, FC, useContext, useState} from 'react';
-import { Grid } from "@material-ui/core";
+import React, { FC, useContext, Fragment, useState} from 'react';
+import {Grid, List, ListItem, Divider, IconButton} from "@material-ui/core";
 import { ContextTodos } from "@/modules/Todos/Todos";
-import {removeTask, toggleTasks, Task, changeTask} from "@/modules/Todos/reducer";
+import {removeTask, Task } from "@/modules/Todos/reducer";
 import TodoInput from "@/modules/TodoInput/TodoInput";
-
-export type TasksListProps = {
-    onChange?: (ev: React.ChangeEvent<HTMLTextAreaElement>) => void
-}
-
-
-
-const TasksList: FC<TasksListProps> = ({onChange}) => {
+import DeleteIcon from "@material-ui/icons/Delete";
+const TasksList: FC = () => {
     const { state, dispatch } = useContext(ContextTodos);
+    const [checked, setChecked] = useState(false);
 
     const removeTaskOfList = (taskRemoving: Task) => {
         if (dispatch) {
+            console.log(taskRemoving)
             dispatch(removeTask(taskRemoving));
-            console.log(taskRemoving);
-            console.log(state);
-        }
-    }
-
-    const toggleTaskOfList = (taskForChange: Task) => {
-        if (dispatch) {
-            dispatch(toggleTasks(taskForChange));
-        }
-    }
-
-    const changeNewTask = (ev: ChangeEvent<HTMLTextAreaElement>) => {
-        ev.preventDefault();
-        if (dispatch) {
-            dispatch(changeTask((ev.target as HTMLTextAreaElement).value));
         }
     }
 
     return (
         <Grid
             item
-            xs={6}
+            xs={12}
         >
-            <h3>Задачи</h3>
-            <ul>
+            <List>
                 {
                     state?.tasks.map((task: Task, i: number) => (
-                        <li key={task.name + i}>
-                            <TodoInput show={true}/>
-                            <button key={task.name + i + 'button'} onClick={() => removeTaskOfList(task)}>x</button>
-                        </li>
+                        <Fragment key={task.name + i + 'Fragment'}>
+                            <ListItem key={task.name + i + 'ListItem'}>
+                                <TodoInput
+                                    key={task.name + i + 'TodoInput'}
+                                    show={true}
+                                    defaultValue={task.name}
+                                    valueDate={task.date}
+                                    valueSelect={task.status}
+                                    checkedBox={() => setChecked(true)}
+                                    valueChecked={task.isDone}
+                                />
+                                <IconButton key={task.name + i + 'button'} type='submit' onClick={() => removeTaskOfList(task)}>
+                                    <DeleteIcon  key={task.name + i + 'DeleteIcon'} />
+                                </IconButton>
+                            </ListItem>
+                            <Divider />
+                        </Fragment>
                     ))
                 }
-            </ul>
+            </List>
         </Grid>
     )
 };

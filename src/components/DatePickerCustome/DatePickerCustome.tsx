@@ -4,6 +4,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import {OutterCalendarProps} from "@material-ui/pickers/views/Calendar/Calendar";
 
 const styleDatePicker = makeStyles({
     root: {
@@ -16,9 +17,9 @@ const styleDatePicker = makeStyles({
         'justify-content': 'center',
         opacity: '0',
         position: "absolute",
-        top: "17px",
-        'z-index': '400',
-        left: "430px",
+        top: 5,
+        zIndex: 100,
+        left: 430,
         'border-radius': '10px',
         '& button': {
             padding: '12px'
@@ -51,22 +52,24 @@ const styleDatePicker = makeStyles({
     },
     '@keyframes animationDatePicker': {
         "from": {
-            opacity: '0'
+            opacity: '0',
+            zIndex: 100
         },
         "to": {
-            opacity: '1'
+            opacity: '1',
+            zIndex: 400
         }
     }
 });
 
-interface DatePickerProps {
+interface DatePickerProps extends OutterCalendarProps{
     clicked?: boolean;
+    changeDate?: (date: MaterialUiPickersDate) => void;
+    value?: MaterialUiPickersDate;
 }
 
-const DatePickerCustome: FC<DatePickerProps> = ({ clicked }) => {
+const DatePickerCustome: FC<DatePickerProps> = ({ clicked, changeDate,value }) => {
     const classes = styleDatePicker();
-
-    const [selectedDate, handleChangeDate] = useState<MaterialUiPickersDate>(new Date());
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -74,9 +77,9 @@ const DatePickerCustome: FC<DatePickerProps> = ({ clicked }) => {
                 className={
                     clsx(classes.root, clicked ? classes.clicked : '')
                 }
-                value={selectedDate}
+                value={value}
                 emptyLabel=''
-                onChange={(date: MaterialUiPickersDate) => handleChangeDate(date)}
+                onChange={changeDate}
                 format="yyyy/MM/dd"
                 inputVariant={'filled'}
             />
@@ -84,4 +87,6 @@ const DatePickerCustome: FC<DatePickerProps> = ({ clicked }) => {
     );
 };
 
-export default (DatePickerCustome);
+export default DatePickerCustome;
+
+DatePickerCustome.displayName = 'DatePickerCustome';

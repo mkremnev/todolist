@@ -1,6 +1,6 @@
-import React, { FC, useState} from 'react';
+import React, { FC, ChangeEvent} from 'react';
 import clsx from "clsx";
-import {makeStyles, Theme, withStyles} from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {InputBase, MenuItem} from "@material-ui/core";
@@ -8,9 +8,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 interface ListsCostumeProps {
     clicked?: boolean;
+    valueSelect?: string;
+    changeSelect?: (ev: ChangeEvent<{ value: unknown; }>) => void
 }
 
-const BootstrapInput = withStyles((theme: Theme) => ({
+const BootstrapInput = withStyles(() => ({
     root: {
         borderRadius: 10,
     },
@@ -29,15 +31,15 @@ const BootstrapInput = withStyles((theme: Theme) => ({
     },
 }))(InputBase);
 
-const styleListsCostume = makeStyles((theme) => ({
+const styleListsCostume = makeStyles(() => ({
     formControl: {
         borderRadius: 10,
         backgroundColor: '#DCDCDC',
         minWidth: 120,
         position: 'absolute',
-        top: 16,
-        left: 484,
-        zIndex: 500,
+        top: 5,
+        left: 475,
+        zIndex: 100,
         opacity: 0,
         '& div': {
             paddingRight: '0 !important',
@@ -65,30 +67,31 @@ const styleListsCostume = makeStyles((theme) => ({
     },
     "@keyframes animatedSelect": {
         "from": {
-            opacity: 0
+            opacity: 0,
+            zIndex: 100,
         },
         "to": {
-            opacity: 1
+            opacity: 1,
+            zIndex: 400,
         }
     }
 }));
 
-const ListsCostume: FC<ListsCostumeProps> = ({ clicked }) => {
+const ListsCostume: FC<ListsCostumeProps> = ({ clicked, valueSelect, changeSelect}) => {
     const classes = styleListsCostume();
-    const [list, handlerChangeList] = useState<string>('');
 
     return (
         <FormControl className={clsx(classes.formControl, clicked ? classes.animation : '')}>
             <Select
                 id='lists'
-                value={list}
-                onChange={ (ev: React.ChangeEvent<{ name?: string; value: string | unknown }>) => handlerChangeList((ev.target.value as string))}
+                value={valueSelect}
+                onChange={changeSelect}
                 input={<BootstrapInput />}
                 IconComponent={() => <ExpandMoreIcon />}
             >
                 <MenuItem value=''>Not list</MenuItem>
                 <MenuItem value='Важное'>Важное</MenuItem>
-                <MenuItem value='Важное'>Важное</MenuItem>
+                <MenuItem value='Среднее'>Среднее</MenuItem>
                 <MenuItem value='Не очень важное'>Не очень важное</MenuItem>
             </Select>
             <span className={classes.circle} />
@@ -97,3 +100,5 @@ const ListsCostume: FC<ListsCostumeProps> = ({ clicked }) => {
 }
 
 export default ListsCostume;
+
+ListsCostume.displayName = 'ListsCostume';
