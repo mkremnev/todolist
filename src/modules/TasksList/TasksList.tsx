@@ -23,10 +23,10 @@ const TasksList: FC = () => {
             <List>
                 {
                     state?.tasks.map((task: Task, i: number) => (
-                        <Fragment key={task.name + i + 'Fragment'}>
-                            <ListItem key={task.name + i + 'ListItem'}>
+                        <Fragment key={task.index + i + 'Fragment'}>
+                            <ListItem key={task.index + i + 'ListItem'}>
                                 <TodoInput
-                                    key={task.name + i + 'TodoInput'}
+                                    key={task.index + i + 'TodoInput'}
                                     show={true}
                                     defaultValue={task.name}
                                     valueDate={task.date}
@@ -34,8 +34,8 @@ const TasksList: FC = () => {
                                     checkedBox={() => setChecked(true)}
                                     valueChecked={task.isDone}
                                 />
-                                <IconButton key={task.name + i + 'button'} type='submit' onClick={() => removeTaskOfList(task)}>
-                                    <DeleteIcon  key={task.name + i + 'DeleteIcon'} />
+                                <IconButton key={task.index + i + 'button'} type='submit' onClick={() => removeTaskOfList(task)}>
+                                    <DeleteIcon  key={task.index + i + 'DeleteIcon'} />
                                 </IconButton>
                             </ListItem>
                             <Divider />
